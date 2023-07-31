@@ -70,7 +70,7 @@ public class MainApp {
     public static int sumSecondLine(int[][] array) {
         int sum = 0;
         int secondIndex = 1;
-        if (array.length == secondIndex || array[secondIndex].length == 0) {
+        if (array.length == 1 || array[secondIndex].length == 0) {
             return -1;
         }
         for (int j = 0; j < array[secondIndex].length; j++) {
