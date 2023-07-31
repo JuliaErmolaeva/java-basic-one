@@ -28,23 +28,21 @@ public class MainApp {
         }
         return sum;
     }
+
     public static void square(int size) {
-        char[][] array = new char[size][size];
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                array[i][j] = '*';
-                System.out.print(array[i][j] + " ");
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                System.out.print("* ");
             }
             System.out.println();
         }
     }
 
     public static void diagonal(int[][] array) {
-        int number = 0;
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
                 if (i == j) {
-                    array[i][j] = number;
+                    array[i][j] = 0;
                 }
                 System.out.print(array[i][j] + " ");
             }
@@ -68,11 +66,12 @@ public class MainApp {
     }
 
     public static int sumSecondLine(int[][] array) {
-        int sum = 0;
-        int secondIndex = 1;
-        if (array.length == 1 || array[secondIndex].length == 0) {
+        if (array.length <= 1) {
             return -1;
         }
+        
+        int sum = 0;
+        int secondIndex = 1;
         for (int j = 0; j < array[secondIndex].length; j++) {
             sum += array[secondIndex][j];
         }
