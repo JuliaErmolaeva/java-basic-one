@@ -6,8 +6,10 @@ public abstract class Animal {
     int speedSwim;
     int endurance;
     boolean isFatigue;
+    String type;
+    int swimCoefficient;
 
-    public Animal(String name, int speedRun, int speedSwim, int endurance) {
+    public Animal(String name, int speedRun, int speedSwim, int endurance, String type, int swimCoefficient) {
         this.name = name;
         this.speedRun = speedRun;
         this.speedSwim = speedSwim;
@@ -15,9 +17,12 @@ public abstract class Animal {
         if (endurance == 0) {
             isFatigue = true;
         }
+        this.type = type;
+        this.swimCoefficient = swimCoefficient;
     }
 
     public void info() {
+        System.out.println(type + ": " + name);
         System.out.println("Скорость бега: " + speedRun);
         System.out.println("Скорость плавания: " + speedSwim);
         System.out.println("Выносливость: " + endurance);
@@ -27,19 +32,19 @@ public abstract class Animal {
     public float run(int distance) {
         if (isFatigue) {
             System.out.println(name + " не имеет сил для Вашего бега");
-            return 0;
+            return -1;
         }
 
         System.out.println(this.name + " пытается пробежать");
 
         float time = (float) distance / speedRun;
         if (endurance < distance) {
-            setEndurance(0);
+            endurance = 0;
             isFatigue = true;
             ++time;
             System.out.println(name + " испытывает состояние усталости");
         } else {
-            setEndurance(endurance - distance);
+            endurance -= distance;
         }
 
         System.out.println(name + " пробегает дистанцию за " + time + " секунды");
@@ -48,27 +53,27 @@ public abstract class Animal {
     }
 
     public float swim(int distance) {
+        if (speedSwim == 0) {
+            System.out.println(type + " не умеет плавать!");
+        }
+
         if (isFatigue) {
             System.out.println("У животного больше нет сил для Вашего плавания");
-            return 0;
+            return -1;
         }
 
         System.out.println(name + " пытается проплыть");
 
-        float time = (float) distance / speedSwim;
+        float time = (float) distance * swimCoefficient / speedSwim;
         if (endurance < distance) {
-            setEndurance(0);
+            endurance = 0;
             isFatigue = true;
             ++time;
             System.out.println("Испытывает состояние усталости");
         } else {
-            setEndurance(endurance - distance);
+            endurance -= distance;
         }
 
         return time;
-    }
-
-    public void setEndurance(int endurance) {
-        this.endurance = endurance;
     }
 }
