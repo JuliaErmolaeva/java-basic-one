@@ -55,6 +55,7 @@ public abstract class Animal {
     public float swim(int distance) {
         if (speedSwim == 0) {
             System.out.println(type + " не умеет плавать!");
+            return -1;
         }
 
         if (isFatigue) {
@@ -73,7 +74,6 @@ public abstract class Animal {
         } else {
             endurance -= distance;
         }
-
         return time;
     }
 }
