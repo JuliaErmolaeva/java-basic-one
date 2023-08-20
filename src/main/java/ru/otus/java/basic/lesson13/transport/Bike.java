@@ -5,13 +5,12 @@ import ru.otus.java.basic.lesson13.Terrain;
 public class Bike extends Transport {
 
     public Bike() {
-        super(TransportType.BIKE);
+        super(TransportType.BIKE, new Terrain[]{Terrain.MARSH});
     }
 
     @Override
-    public boolean doAction(int distance, Terrain terrain) {
-        if (Terrain.MARSH.equals(terrain)) {
-            System.out.println(transportType.getValue() + " не может проехать через " + terrain.getValue());
+    public boolean move(int distance, Terrain terrain) {
+        if (isTerrainNotAvailable(terrain)) {
             return false;
         }
         if (distance < 0) {

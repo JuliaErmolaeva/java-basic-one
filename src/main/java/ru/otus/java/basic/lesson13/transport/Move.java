@@ -2,7 +2,7 @@ package ru.otus.java.basic.lesson13.transport;
 
 import ru.otus.java.basic.lesson13.Terrain;
 
-public interface Action {
+public interface Move {
 
-    boolean doAction(int distance, Terrain terrain);
+    boolean move(int distance, Terrain terrain);
 }

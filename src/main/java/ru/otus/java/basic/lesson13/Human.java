@@ -14,7 +14,7 @@ public class Human {
         if (currentTransport == null) {
             return walk(distance, terrain);
         }
-        return currentTransport.doAction(distance, terrain);
+        return currentTransport.move(distance, terrain);
     }
 
     private boolean walk(int distance, Terrain terrain) {
