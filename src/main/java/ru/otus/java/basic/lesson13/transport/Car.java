@@ -4,10 +4,10 @@ import ru.otus.java.basic.lesson13.Terrain;
 
 public class Car extends Transport {
 
-    private static final Terrain [] impassableTerrains = {Terrain.DENSE_FOREST, Terrain.MARSH};
+    private static final Terrain [] IMPASSABLE_TERRAINS = {Terrain.DENSE_FOREST, Terrain.MARSH};
 
     public Car() {
-        super(TransportType.CAR, 4000, impassableTerrains);
+        super(TransportType.CAR, 4000, IMPASSABLE_TERRAINS);
     }
 
     @Override
