@@ -27,9 +27,10 @@ public class MainApp {
         List<String> listNames = getListNames(employees);
         System.out.println(listNames);
 
-        System.out.println(getEmployeesMoreThanMinAge(employees, 25));
+        System.out.println(moreOrEqual(employees, 25));
 
-        System.out.println(getEmployeesOlderAverageAge(employees, getAverageAge(employees)));
+        getEmployeesOlderAverageAge(employees, 30);
+        getEmployeesOlderAverageAge(employees, 39);
 
         System.out.println(getYoungestEmployee(employees));
     }
@@ -45,7 +46,9 @@ public class MainApp {
     private static int sumArray(List<Integer> list) {
         int sum = 0;
         for (Integer integer : list) {
-            sum += integer;
+            if (integer > 5) {
+                sum += integer;
+            }
         }
         return sum;
     }
@@ -70,7 +73,7 @@ public class MainApp {
         return names;
     }
 
-    private static List<Employee> getEmployeesMoreThanMinAge(List<Employee> employees, int minAge) {
+    private static List<Employee> moreOrEqual(List<Employee> employees, int minAge) {
         List<Employee> oldEmployees = new ArrayList<>();
         for (Employee employee : employees) {
             if (employee.getAge() >= minAge) {
@@ -80,24 +83,21 @@ public class MainApp {
         return oldEmployees;
     }
 
-    private static List<Employee> getEmployeesOlderAverageAge(List<Employee> employees, int averageAge) {
-        List<Employee> employeesOlderAverageAge = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (employee.getAge() > averageAge) {
-                employeesOlderAverageAge.add(employee);
-            }
+    private static void getEmployeesOlderAverageAge(List<Employee> employees, int averageAge) {
+        int averageAgeEmployees = getAverageAgeEmployees(employees);
+        if (averageAgeEmployees > averageAge) {
+            System.out.println("Средний возраст сотрудников = " + averageAgeEmployees + " больше указанного = " + averageAge);
+        } else {
+            System.out.println("Средний возраст сотрудников = " + averageAgeEmployees + " меньше указанного = " + averageAge);
         }
-        return employeesOlderAverageAge;
     }
 
-    private static int getAverageAge(List<Employee> employees) {
+    private static int getAverageAgeEmployees(List<Employee> employees) {
         int sumAge = 0;
         for (Employee employee : employees) {
             sumAge += employee.getAge();
         }
-        int averageAge = sumAge / employees.size();
-        System.out.println("Average age is " + averageAge);
-        return averageAge;
+        return sumAge / employees.size();
     }
 
     private static Employee getYoungestEmployee(List<Employee> employees) {
