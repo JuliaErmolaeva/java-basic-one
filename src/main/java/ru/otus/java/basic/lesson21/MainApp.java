@@ -2,7 +2,7 @@ package ru.otus.java.basic.lesson21;
 
 public class MainApp {
 
-    private static final int COUNT_PART = 4;
+    private static final int COUNT_THREADS = 4;
     private static final int SIZE_ARRAY = 100_000_000;
 
     public static void main(String[] args) throws InterruptedException {
@@ -13,51 +13,36 @@ public class MainApp {
     private static void unparallelOperation() {
         double[] arrayDouble = new double[SIZE_ARRAY];
         long startTime = System.nanoTime();
-        for (int i = 0; i < arrayDouble.length; i++) {
+        for (int i = 0; i < SIZE_ARRAY; i++) {
             arrayDouble[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
         }
         System.out.println(System.nanoTime() - startTime);
     }
 
     private static void parallelOperation() throws InterruptedException {
+        Thread[] threads = new Thread[COUNT_THREADS];
+
         double[] arrayDouble = new double[SIZE_ARRAY];
 
-        int endFirstPart = SIZE_ARRAY / COUNT_PART;
-        Thread t1 = new Thread(() -> {
-            for (int i = 0; i < endFirstPart; i++) {
-                arrayDouble[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
-            }
-        });
-
-        int endSecondPart = SIZE_ARRAY / 2;
-        Thread t2 = new Thread(() -> {
-            for (int i = endFirstPart; i < endSecondPart; i++) {
-                arrayDouble[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
-            }
-        });
-
-        int endThirdPart = SIZE_ARRAY / 2 + SIZE_ARRAY / COUNT_PART;
-        Thread t3 = new Thread(() -> {
-            for (int i = endSecondPart; i < endThirdPart; i++) {
-                arrayDouble[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
-            }
-        });
-
-        Thread t4 = new Thread(() -> {
-            for (int i = endThirdPart; i < SIZE_ARRAY; i++) {
-                arrayDouble[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
-            }
-        });
+        for (int i = 0; i < COUNT_THREADS; i++) {
+            int step = i;
+            threads[i] = new Thread(() -> {
+                for (int j = SIZE_ARRAY / COUNT_THREADS * step; j < SIZE_ARRAY / COUNT_THREADS * (step + 1); j++) {
+                    arrayDouble[j] = 1.14 * Math.cos(j) * Math.sin(j * 0.2) * Math.cos(j / 1.2);
+                }
+            });
+        }
 
         long startTime = System.nanoTime();
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        t1.join();
-        t2.join();
-        t3.join();
-        t4.join();
+
+        for (Thread thread : threads) {
+            thread.start();
+        }
+
+        for (Thread thread : threads) {
+            thread.join();
+        }
+
         System.out.println(System.nanoTime() - startTime);
     }
 }
