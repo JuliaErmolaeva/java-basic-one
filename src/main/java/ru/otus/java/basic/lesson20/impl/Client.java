@@ -21,6 +21,7 @@ public class Client implements AutoCloseable {
 
             System.out.println("Client is running");
             Scanner scanner = new Scanner(System.in);
+            System.out.println(client.pull());
             do {
                 System.out.print("Для продолжения нажмите n: ");
                 if (!scanner.next().contains("n")) {
@@ -36,7 +37,7 @@ public class Client implements AutoCloseable {
                 String secondNumber = scanner.next();
                 stringBuilder.append(secondNumber).append(" ");
 
-                System.out.print("Введите операцию (+, -, *, /): ");
+                System.out.print("Введите операцию: ");
                 String operation = scanner.next();
                 stringBuilder.append(operation);
 

@@ -17,12 +17,15 @@ public class Server implements AutoCloseable {
         Socket socket = serverSocket.accept();
         in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        System.out.println("Client connected to server");
+        out.writeBytes("List available operations +, -, *, /" + "\n");
+        out.flush();
+        System.out.println();
     }
 
     public static void run(int port) {
         try (Server server = new Server(port)) {
 
-            System.out.println("Client connected to server");
             while (true) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 String message = reader.readLine();
