@@ -15,32 +15,17 @@ public class Box<T extends Fruit> {
         fruits.add(element);
     }
 
-    //метод weight, который высчитывает вес коробки
+    //метод weight, вычисляющий вес коробки
     public double weight() {
-        double weightBox;
-
         if (fruits.size() < 1) {
             return 0.0;
         }
 
-        double weightApple = 0;
-        int countApples = 0;
-
-        double weightOrange = 0;
-        int countOranges = 0;
-
+        double weightBox = 0;
         for (T fruit : fruits) {
-            if (fruit instanceof Apple) {
-                weightApple = fruit.getWeight();
-                countApples++;
-            }
-            if (fruit instanceof Orange) {
-                weightOrange = fruit.getWeight();
-                countOranges++;
-            }
+            weightBox += fruit.getWeight();
         }
-
-        return (weightApple * countApples) + (weightOrange * countOranges);
+        return weightBox;
     }
 
     //метод compare, позволяющий сравнить текущую коробку с переданной
@@ -49,7 +34,7 @@ public class Box<T extends Fruit> {
     }
 
     //метод, позволяющий пересыпать фрукты из текущей коробки в другую
-    public void moveFruictsTo(Box<? super T> destinationBox) {
+    public void moveFruitsTo(Box<? super T> destinationBox) {
         if (this != destinationBox && destinationBox != null) {
             fruits.forEach(destinationBox::add);
             fruits.clear();

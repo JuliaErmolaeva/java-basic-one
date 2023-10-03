@@ -34,15 +34,15 @@ public class MainApp {
         boxOranges.add(new Orange(6d));
         boxOranges.add(new Orange(6d));
 
-        boxOranges.moveFruictsTo(boxOranges2);
+        boxOranges.moveFruitsTo(boxOranges2);
         System.out.println(boxOranges.weight());
         System.out.println(boxOranges2.weight());
 
-        boxOranges2.moveFruictsTo(boxFruits);
+        boxOranges2.moveFruitsTo(boxFruits);
         System.out.println(boxOranges2.weight());
         System.out.println(boxFruits.weight());
 
-        boxApples.moveFruictsTo(boxFruits);
+        boxApples.moveFruitsTo(boxFruits);
         System.out.println(boxApples.weight());
         System.out.println(boxFruits.weight());
     }
