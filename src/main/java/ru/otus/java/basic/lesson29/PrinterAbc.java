@@ -7,67 +7,39 @@ public class PrinterAbc {
 
     private final Object monitor = new Object();
 
-    private static int state = 1;
+    private static char currentState = 'A';
+
+    private static final char SYMBOL_A = 'A';
+    private static final char SYMBOL_B = 'B';
+    private static final char SYMBOL_C = 'C';
 
     public static void main(String[] args) {
         ExecutorService service = Executors.newFixedThreadPool(3);
+        PrinterAbc printer = new PrinterAbc();
 
-        PrinterAbc p = new PrinterAbc();
-
-        service.submit(() -> p.print('A'));
-        service.submit(() -> p.print('B'));
-        service.submit(() -> p.print('C'));
+        service.submit(() -> printer.print(SYMBOL_A, SYMBOL_A, SYMBOL_B));
+        service.submit(() -> printer.print(SYMBOL_B, SYMBOL_B, SYMBOL_C));
+        service.submit(() -> printer.print(SYMBOL_C, SYMBOL_C, SYMBOL_A));
 
         service.shutdown();
     }
 
-    private void print(char symbol) {
-        try {
-            synchronized (monitor) {
+    public void print(char symbol, char expectedState, char nextState) {
+        synchronized (monitor) {
+            try {
                 for (int i = 0; i < 5; i++) {
-                    switch (symbol) {
-                        case 'A' -> {
-                            while (state != 1) {
-                                try {
-                                    monitor.wait();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            System.out.print(symbol);
-                            state = 2;
-                            monitor.notifyAll();
-                        }
-                        case 'B' -> {
-                            while (state != 2) {
-                                try {
-                                    monitor.wait();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            System.out.print("B");
-                            state = 3;
-                            monitor.notifyAll();
-                        }
-                        case 'C' -> {
-                            while (state != 3) {
-                                try {
-                                    monitor.wait();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            System.out.print("C");
-                            Thread.sleep(1000);
-                            state = 1;
-                            monitor.notifyAll();
-                        }
+                    while (currentState != expectedState) {
+                        monitor.wait();
                     }
+                    System.out.print(symbol);
+                    System.out.println(" " + Thread.currentThread());
+                    currentState = nextState;
+                    Thread.sleep(500);
+                    monitor.notifyAll();
                 }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        } catch (Exception e) {
-            System.out.println("Exception :" + e.getMessage());
         }
     }
 }
